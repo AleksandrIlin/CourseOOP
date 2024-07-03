@@ -23,12 +23,13 @@ poetry install
 
 ```
 Запуск тестов командой "pytest --cov"
-покрытие тестами 96%
+покрытие тестами 91%
 ```
 
 5. Модули
 
 ```
+main.py
 utils.py
 test_utils.py
 ```
