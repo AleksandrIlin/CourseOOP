@@ -23,7 +23,7 @@ class Category:
     def __len__(self) -> int:
         return sum(product.quantity for product in self.__products)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}, количество продуктов: {len(self)} шт"
 
     @classmethod
@@ -49,11 +49,11 @@ class Product:
         self._price = price
         self.quantity = quantity
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Метод для вывода строки"""
         return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other):
+    def __add__(self, other: Any) -> Any:
         """Метод для вывода суммы всех товаров на складе"""
         return self._price * self.quantity + other.price * other.quantity
 
@@ -101,15 +101,15 @@ class Product:
 class ProductsIterator:
     """Класс итератор по продуктам"""
 
-    def __init__(self, category):
+    def __init__(self, category: Any) -> None:
         self.category = category
         self.products = category.get_products()
         self.index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> Any:
         return self
 
-    def __next__(self):
+    def __next__(self) -> Any:
         if self.index < len(self.products):
             product = self.products[self.index]
             self.index += 1

@@ -56,7 +56,7 @@ def test_load_data_from_file() -> None:
     assert len(result) > 0
 
 
-def test_category():
+def test_category() -> None:
     # Создаем тестовые продукты
     product1 = Product("Яблоко", "Сладкое яблоко", 50.0, 10)
     product2 = Product("Груша", "Сочная груша", 70.0, 5)
@@ -81,7 +81,7 @@ def test_category():
     )
 
 
-def test_product():
+def test_product() -> None:
     # Создаем тестовый продукт
     product = Product("Яблоко", "Сладкое яблоко", 50.0, 10)
 
@@ -100,7 +100,7 @@ def test_product():
     # product.price = 40.0
 
 
-def test_load_data_from_json():
+def test_load_data_from_json() -> None:
     # Создаем тестовый файл JSON
     test_data = [
         {
@@ -129,12 +129,12 @@ def test_load_data_from_json():
     os.remove("test_data.json")
 
 
-def test_str_method():
+def test_str_method() -> None:
     product = Product("Apple", "Fruits", 10.0, 5)
     assert str(product) == "Apple, 10.0 руб. Остаток: 5 шт."
 
 
-def test_add_method():
+def test_add_method() -> None:
     product1 = Product("Apple", "Fruits", 10, 5)
     product2 = Product("Orange", "Fruits", 15.0, 3)
     total_value = product1 + product2
@@ -142,7 +142,7 @@ def test_add_method():
 
 
 @pytest.fixture
-def category():
+def category() -> Any:
     products = [
         Product("Product 1", "Description 1", 10.0, 5),
         Product("Product 2", "Description 2", 15.0, 3),
@@ -151,12 +151,12 @@ def category():
     return Category("Test Category", "Description", products)
 
 
-def test_products_iterator(category):
+def test_products_iterator(category: Any) -> None:
     products_iterator = ProductsIterator(category)
     assert len(list(products_iterator)) == 3
 
 
-def test_products_iterator_next(category):
+def test_products_iterator_next(category: Any) -> None:
     products_iterator = ProductsIterator(category)
     product1 = next(products_iterator)
     assert product1.name == "Product 1"
@@ -168,7 +168,7 @@ def test_products_iterator_next(category):
         next(products_iterator)
 
 
-def test_products_iterator_iteration(category):
+def test_products_iterator_iteration(category: Any) -> None:
     products_iterator = ProductsIterator(category)
     products = [product for product in products_iterator]
     assert len(products) == 3
