@@ -20,7 +20,7 @@ class Category:
         Category.all_unique_products += len(set([product.name for product in self.__products]))
         Category.all_category += 1
 
-    def __len__(self):
+    def __len__(self) -> int:
         return sum(product.quantity for product in self.__products)
 
     def __str__(self):
