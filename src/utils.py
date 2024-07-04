@@ -17,17 +17,18 @@ class Category:
         self.description = description
         self.__products = products  # изменение атрибута на приватный
 
-        Category.all_unique_products += len(set([product.name for product in products]))
+        Category.all_unique_products += len(set([product.name for product in self.__products]))
         Category.all_category += 1
+
+    def __len__(self) -> int:
+        return sum(product.quantity for product in self.__products)
+
+    def __str__(self) -> str:
+        return f"{self.name}, количество продуктов: {len(self)} шт"
 
     @classmethod
     def set_products(cls, list_products: list) -> None:
         cls.__products = list_products
-
-    @property
-    def enter_list_products(self) -> str:
-        product = self.__products[0]  # Получаем первый продукт из списка
-        return f"{self.name}, {product.price} руб. Остаток: {product.quantity}"
 
     def get_products(self) -> list:
         return self.__products
@@ -47,6 +48,14 @@ class Product:
         self.description = description
         self._price = price
         self.quantity = quantity
+
+    def __str__(self) -> str:
+        """Метод для вывода строки"""
+        return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: Any) -> Any:
+        """Метод для вывода суммы всех товаров на складе"""
+        return self._price * self.quantity + other.price * other.quantity
 
     @classmethod
     def create_and_add_to_list(
@@ -79,14 +88,34 @@ class Product:
                 if user_input.lower() in ["y", "yes", "да"]:
                     self._price = new_price
                     print(self._price)
-                    print("Цена успешно изменена")
+                    print("Цена успешно изменена\n")
                 else:
                     print(self._price)
-                    print("Изменение цены отменено")
+                    print("Изменение цены отменено\n")
             else:
                 self._price = new_price
                 print(self._price)
-                print("Цена успешно изменена")
+                print("Цена успешно изменена\n")
+
+
+class ProductsIterator:
+    """Класс итератор по продуктам"""
+
+    def __init__(self, category: Any) -> None:
+        self.category = category
+        self.products = category.get_products()
+        self.index = 0
+
+    def __iter__(self) -> Any:
+        return self
+
+    def __next__(self) -> Any:
+        if self.index < len(self.products):
+            product = self.products[self.index]
+            self.index += 1
+            return product
+        else:
+            raise StopIteration()
 
 
 def load_data_from_json(file_path: str) -> Any:
