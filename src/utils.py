@@ -41,26 +41,28 @@ class Product:
     description: str
     _price: float
     quantity: int
+    color: str
 
-    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, color: str) -> None:
         """Метод для инициализации экземпляра класса. Задаем значения атрибутам."""
         self.name = name
         self.description = description
         self._price = price
         self.quantity = quantity
+        self.color = color
 
     def __str__(self) -> str:
         """Метод для вывода строки"""
         return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other: Any) -> Any:
-        """Метод для вывода суммы всех товаров на складе"""
-        return self._price * self.quantity + other.price * other.quantity
+    def __add__(self, other):
+        if type(self) != type(other):
+            raise TypeError("Можно складывать только одинаковые типы продуктов")
+        return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
     def create_and_add_to_list(
-        cls, products_list: list, name: str, description: str, price: float, quantity: int
-    ) -> Any:
+            cls, products_list: list, name: str, description: str, price: float, quantity: int, color: str) -> Any:
         """Метод для создания товара и добавления его в список товаров с проверкой наличия дубликата."""
         for product in products_list:
             if product.name == name:
@@ -68,7 +70,13 @@ class Product:
                     product._price = price
                 product.quantity += quantity
                 return product
-        new_product = cls(name, description, price, quantity)
+
+        # Проверяем, что объект является экземпляром класса Product или его наследником
+        if (not isinstance(name, str) or not isinstance(description, str)
+                or not isinstance(price, float) or not isinstance(quantity, int) or not isinstance(color, str)):
+            raise TypeError("Неверный тип данных для создания продукта")
+
+        new_product = cls(name, description, price, quantity, color)
         products_list.append(new_product)
         return products_list
 
@@ -130,7 +138,8 @@ def load_data_from_json(file_path: str) -> Any:
             products = []
             for product_data in products_data:
                 product = Product(
-                    product_data["name"], product_data["description"], product_data["price"], product_data["quantity"]
+                    product_data["name"], product_data["description"], product_data["price"], product_data["quantity"],
+                    product_data["color"]
                 )
                 products.append(product)
             category = Category(name, description, products)
