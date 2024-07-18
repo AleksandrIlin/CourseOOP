@@ -242,6 +242,8 @@ def test_create_and_add_to_list_invalid_input():
         Product.create_and_add_to_list(products_list, "Test Product", "Test Description", 10.0, "5", "color")
     with pytest.raises(TypeError):
         Product.create_and_add_to_list(products_list, "Test Product", "Test Description", 10.0, 5, 123)
+    with pytest.raises(ValueError):
+        Product.create_and_add_to_list(products_list, "Test Product", "Test Description", 10.0, 0, "color")
 
 
 def test_category_len(category_object):
@@ -253,3 +255,4 @@ def test_products_iterator_empty_category(product1, product2):
     products_iterator = ProductsIterator(category)
     with pytest.raises(StopIteration):
         next(products_iterator)
+

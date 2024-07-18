@@ -62,5 +62,8 @@ except TypeError as e:
     print(f"Вывод ошибки при сложении разных классов - {e}")  # Можно складывать только одинаковые типы продуктов
 
 
+# products_list = Product.create_and_add_to_list([], "Test Product", "Test Description",
+#                                                10.0, 0, "Red")
+
 products_list = Product.create_and_add_to_list([], "Test Product", "Test Description",
                                                10.0, "5", "Red")
