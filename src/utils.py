@@ -59,6 +59,15 @@ class Category:
         """Получение приватного продукта"""
         return self.__products
 
+    def average_products_price(self):
+        """Метод для подсчета средней цены всех товаров в категории"""
+        try:
+            total_price = sum(product.price for product in self.__products)
+            average_price = total_price / len(self.__products)
+            return average_price
+        except ZeroDivisionError:
+            return 0
+
 
 class Product(BaseProduct, CreationMixin):
     """Класс продукт"""
@@ -108,6 +117,9 @@ class Product(BaseProduct, CreationMixin):
         if (not isinstance(name, str) or not isinstance(description, str)
                 or not isinstance(price, float) or not isinstance(quantity, int) or not isinstance(color, str)):
             raise TypeError("Неверный тип данных для создания продукта")
+
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
 
         new_product = cls(name, description, price, quantity, color)
         products_list.append(new_product)
@@ -178,3 +190,6 @@ def load_data_from_json(file_path: str) -> Any:
             category = Category(name, description, products)
             categories.append(category)
         return categories
+
+
+
